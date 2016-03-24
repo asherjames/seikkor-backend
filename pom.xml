@@ -7,6 +7,8 @@
     <groupId>ash.java.photo</groupId>
     <artifactId>photo-backend</artifactId>
     <version>0.0.1</version>
+
+
     <dependencies>
         <!-- JAX-RS dependencies -->
         <dependency>
@@ -53,11 +55,24 @@
 
         <!-- Image processing -->
         <dependency>
-            <groupId>org.imagescalr</groupId>
+            <groupId>org.imgscalr</groupId>
             <artifactId>imgscalr-lib</artifactId>
             <version>4.2</version>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 
 </project>

@@ -14,4 +14,9 @@ public class PhotoWsException extends RuntimeException {
         super(comment, throwable);
         Log.error(comment, throwable.getMessage());
     }
+
+    public PhotoWsException(String comment) {
+        super(comment);
+        Log.error(comment);
+    }
 }
