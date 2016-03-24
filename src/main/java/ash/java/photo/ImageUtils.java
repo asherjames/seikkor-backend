@@ -9,7 +9,7 @@ import java.awt.image.BufferedImage;
  */
 public class ImageUtils {
 
-    public static int getImageWidth(BufferedImage img) {
+    public static int scaleImage(BufferedImage img) {
 
     }
 

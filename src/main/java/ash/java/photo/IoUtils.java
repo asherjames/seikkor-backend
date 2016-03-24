@@ -25,7 +25,7 @@ public class IoUtils {
     private IoUtils() {}
 
     public static BufferedImage loadImage(String imageName) {
-        Log.debug("Attempting to load " + imageName + "...");
+        Log.info("Attempting to load " + imageName + "...");
         BufferedImage img = null;
         try {
             img = ImageIO.read(new File(imageName));
@@ -52,7 +52,7 @@ public class IoUtils {
     }
 
     private static Properties loadProperties() {
-        Log.debug("Attempting to load properties...");
+        Log.info("Attempting to load properties...");
         try {
             ClassLoader loader = IoUtils.class.getClassLoader();
             InputStream input = loader.getResourceAsStream(PROPERTIES_FILE);
