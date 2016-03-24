@@ -1,13 +1,21 @@
 package ash.java.photo;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by Asher on 23/03/2016.
  */
 public class ImageInfo {
 
-    private String filename;
-    private int width;
-    private int height;
+    @SerializedName("src") private String filename;
+    @SerializedName("w") private int width;
+    @SerializedName("h") private int height;
+
+    public ImageInfo(String filename, int width, int height) {
+        this.filename = filename;
+        this.width = width;
+        this.height = height;
+    }
 
     public String getFilename() {
         return filename;

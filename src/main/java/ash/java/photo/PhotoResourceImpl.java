@@ -4,8 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.core.Response;
-import java.util.Properties;
-
 /**
  * Created by Asher on 20/03/2016.
  */

@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Properties;
 
 /**
@@ -32,7 +33,12 @@ public class IoUtils {
         return img;
     }
 
-    public static Properties loadProperties() {
+    public static ArrayList<ImageInfo> getImageInfo() {
+        Properties props = loadProperties();
+        String path = props.getProperty("imageFolderPath");
+    }
+
+    private static Properties loadProperties() {
         Log.debug("Attempting to load properties...");
         try {
             ClassLoader loader = IoUtils.class.getClassLoader();
