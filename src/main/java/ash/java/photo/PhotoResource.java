@@ -14,7 +14,7 @@ import javax.ws.rs.core.Response;
 public interface PhotoResource {
 
     @GET
-    @Path("/filenames")
+    @Path("/allphotoinfo")
     @Produces(MediaType.APPLICATION_JSON)
     Response getAllPhotoPaths();
 

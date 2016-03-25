@@ -43,26 +43,38 @@ public class IoUtils {
     public static List<ImageInfo> getInfoForAllImages() {
         Log.info("Attempting to read filenames from directory");
         Properties props = loadProperties();
+        updateImageDirectories(props);
         String path = props.getProperty("fullsizeImageFolderPath");
-        File imageFolder = new File(path);
-        if (!imageFolder.isDirectory()) {
-            throw new PhotoWsException("File specified in config is not a directory!");
-        }
-        File[] files = imageFolder.listFiles();
+        List<String> filenames = getAllFilenamesInDirectory(path);
         List<ImageInfo> info = new ArrayList<>();
-        for (File f : files) {
-            String name = FilenameUtils.getBaseName(f.getName());
+        for (String name : filenames) {
             BufferedImage img = loadImage(name, ImageTypeEnum.FULLSIZE);
             info.add(ImageUtils.getInfo(img, name));
         }
         return info;
     }
 
-    private static void updateImageSizeAndThumbnail(BufferedImage img, String name) {
-
+    public static void updateImageDirectories(Properties props) {
+        String fullsizePath = props.getProperty("fullsizeImageFolderPath");
+        String thumbnailPath = props.getProperty("thumbnailImageFolderPath");
+        File
     }
 
-    private static Properties loadProperties() {
+    private static List<String> getAllFilenamesInDirectory(String path) {
+        File imageFolder = new File(path);
+        if (!imageFolder.isDirectory()) {
+            throw new PhotoWsException("File specified in config is not a directory!");
+        }
+        File[] files = imageFolder.listFiles();
+        List<String> filenames = new ArrayList<>();
+        for (File f : files) {
+            String name = FilenameUtils.getBaseName(f.getName());
+            filenames.add(name);
+        }
+        return filenames;
+    }
+
+    public static Properties loadProperties() {
         Log.info("Attempting to load properties...");
         try {
             ClassLoader loader = IoUtils.class.getClassLoader();
