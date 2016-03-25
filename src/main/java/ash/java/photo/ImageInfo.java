@@ -8,11 +8,13 @@ import com.google.gson.annotations.SerializedName;
 public class ImageInfo {
 
     @SerializedName("src") private String filename;
+    @SerializedName("thumbnail") private String thumbnail;
     @SerializedName("w") private int width;
     @SerializedName("h") private int height;
 
     public ImageInfo(String filename, int width, int height) {
         this.filename = filename;
+        this.thumbnail = filename;
         this.width = width;
         this.height = height;
     }

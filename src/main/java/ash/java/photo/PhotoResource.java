@@ -21,7 +21,7 @@ public interface PhotoResource {
     @GET
     @Path("/photo/{photoname}")
     @Produces("image/jpeg")
-    Response getPhoto(@PathParam("photoname") String name);
+    Response getFullsizePhoto(@PathParam("photoname") String name);
 
     @GET
     @Path("/photo/thumb/{photoname}")

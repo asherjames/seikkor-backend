@@ -5,12 +5,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
-import javax.xml.ws.WebServiceException;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -24,31 +24,42 @@ public class IoUtils {
 
     private IoUtils() {}
 
-    public static BufferedImage loadImage(String imageName) {
+    public static BufferedImage loadImage(String imageName, ImageTypeEnum type) {
         Log.info("Attempting to load " + imageName + "...");
+        Properties props = loadProperties();
+        String path = type == ImageTypeEnum.FULLSIZE ?
+                props.getProperty("fullsizeImageFolderPath") + imageName :
+                props.getProperty("thumbnailImageFolderPath") + imageName;
+        Log.debug("Loading " + imageName + " from " + path);
         BufferedImage img = null;
         try {
-            img = ImageIO.read(new File(imageName));
+            img = ImageIO.read(new File(path));
         } catch (IOException e) {
             throw new PhotoWsException("IO Exception while loading image", e);
         }
         return img;
     }
 
-    public static ArrayList<String> getImageFilenames() {
+    public static List<ImageInfo> getInfoForAllImages() {
         Log.info("Attempting to read filenames from directory");
         Properties props = loadProperties();
-        String path = props.getProperty("imageFolderPath");
+        String path = props.getProperty("fullsizeImageFolderPath");
         File imageFolder = new File(path);
         if (!imageFolder.isDirectory()) {
-            throw new PhotoWsException("File specified in config is not a directory");
+            throw new PhotoWsException("File specified in config is not a directory!");
         }
         File[] files = imageFolder.listFiles();
-        ArrayList<String> filenames = new ArrayList<>();
+        List<ImageInfo> info = new ArrayList<>();
         for (File f : files) {
-            filenames.add(FilenameUtils.getBaseName(f.getName()));
+            String name = FilenameUtils.getBaseName(f.getName());
+            BufferedImage img = loadImage(name, ImageTypeEnum.FULLSIZE);
+            info.add(ImageUtils.getInfo(img, name));
         }
-        return filenames;
+        return info;
+    }
+
+    private static void updateImageSizeAndThumbnail(BufferedImage img, String name) {
+
     }
 
     private static Properties loadProperties() {
