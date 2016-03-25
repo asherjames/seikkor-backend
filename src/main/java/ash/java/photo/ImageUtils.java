@@ -3,12 +3,13 @@ package ash.java.photo;
 import org.imgscalr.Scalr;
 
 import java.awt.image.BufferedImage;
-import java.util.Properties;
 
 /**
  * Created by Asher on 20/03/2016.
  */
 public class ImageUtils {
+
+    private ImageUtils() {}
 
     public static int scaleImage(BufferedImage img) {
 

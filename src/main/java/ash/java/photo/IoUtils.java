@@ -1,5 +1,6 @@
 package ash.java.photo;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +21,10 @@ public class IoUtils {
 
     private static final String PROPERTIES_FILE = "config.properties";
 
+    private static final String FULLSIZE_IMAGE_FOLDER_PATH_PROPERTY = "fullsizeImageFolderPath";
+
+    private static final String THUMBNAIL_IMAGE_FOLDER_PATH_PROPERTY = "thumbnailImageFolderPath";
+
     private static final Logger Log = LoggerFactory.getLogger(IoUtils.class);
 
     private IoUtils() {}
@@ -28,8 +33,8 @@ public class IoUtils {
         Log.info("Attempting to load " + imageName + "...");
         Properties props = loadProperties();
         String path = type == ImageTypeEnum.FULLSIZE ?
-                props.getProperty("fullsizeImageFolderPath") + imageName :
-                props.getProperty("thumbnailImageFolderPath") + imageName;
+                props.getProperty(FULLSIZE_IMAGE_FOLDER_PATH_PROPERTY) + imageName :
+                props.getProperty(THUMBNAIL_IMAGE_FOLDER_PATH_PROPERTY) + imageName;
         Log.debug("Loading " + imageName + " from " + path);
         BufferedImage img = null;
         try {
@@ -44,7 +49,7 @@ public class IoUtils {
         Log.info("Attempting to read filenames from directory");
         Properties props = loadProperties();
         updateImageDirectories(props);
-        String path = props.getProperty("fullsizeImageFolderPath");
+        String path = props.getProperty(FULLSIZE_IMAGE_FOLDER_PATH_PROPERTY);
         List<String> filenames = getAllFilenamesInDirectory(path);
         List<ImageInfo> info = new ArrayList<>();
         for (String name : filenames) {
@@ -55,9 +60,14 @@ public class IoUtils {
     }
 
     public static void updateImageDirectories(Properties props) {
-        String fullsizePath = props.getProperty("fullsizeImageFolderPath");
-        String thumbnailPath = props.getProperty("thumbnailImageFolderPath");
-        File
+        String fullsizePath = props.getProperty(FULLSIZE_IMAGE_FOLDER_PATH_PROPERTY);
+        String thumbnailPath = props.getProperty(THUMBNAIL_IMAGE_FOLDER_PATH_PROPERTY);
+        List<String> fullsizeFilenames = getAllFilenamesInDirectory(fullsizePath);
+        List<String> thumbnailFilenames = getAllFilenamesInDirectory(thumbnailPath);
+        List<String> thumbnailsNeeded = new ArrayList<>(CollectionUtils.subtract(fullsizeFilenames, thumbnailFilenames));
+        if (thumbnailsNeeded.isEmpty())
+            return;
+        
     }
 
     private static List<String> getAllFilenamesInDirectory(String path) {
