@@ -11,7 +11,7 @@ public class ImageUtils {
 
     private ImageUtils() {}
 
-    public static int scaleImage(BufferedImage img) {
+    public static void scaleToThumbnail(BufferedImage img, int maxWidth, int maxHeight) {
 
     }
 

@@ -20,10 +20,10 @@ import java.util.Properties;
 public class IoUtils {
 
     private static final String PROPERTIES_FILE = "config.properties";
-
     private static final String FULLSIZE_IMAGE_FOLDER_PATH_PROPERTY = "fullsizeImageFolderPath";
-
     private static final String THUMBNAIL_IMAGE_FOLDER_PATH_PROPERTY = "thumbnailImageFolderPath";
+    private static final String THUMBNAIL_MAX_WIDTH_PROPERTY = "maxThumbnailWidth";
+    private static final String THUMBNAIL_MAX_HEIGHT_PROPERTY = "maxThumbnailHeight";
 
     private static final Logger Log = LoggerFactory.getLogger(IoUtils.class);
 
@@ -60,14 +60,30 @@ public class IoUtils {
     }
 
     public static void updateImageDirectories(Properties props) {
+        Log.info("Updating directories");
         String fullsizePath = props.getProperty(FULLSIZE_IMAGE_FOLDER_PATH_PROPERTY);
         String thumbnailPath = props.getProperty(THUMBNAIL_IMAGE_FOLDER_PATH_PROPERTY);
+
+        int maxThumbWidth = Integer.parseInt(props.getProperty(THUMBNAIL_MAX_WIDTH_PROPERTY));
+        int maxThumbHeight = Integer.parseInt(props.getProperty(THUMBNAIL_MAX_HEIGHT_PROPERTY));
+
         List<String> fullsizeFilenames = getAllFilenamesInDirectory(fullsizePath);
         List<String> thumbnailFilenames = getAllFilenamesInDirectory(thumbnailPath);
         List<String> thumbnailsNeeded = new ArrayList<>(CollectionUtils.subtract(fullsizeFilenames, thumbnailFilenames));
+
         if (thumbnailsNeeded.isEmpty())
             return;
-        
+        for(String s : thumbnailsNeeded) {
+            BufferedImage img = loadImage(s, ImageTypeEnum.FULLSIZE);
+            ImageUtils.scaleToThumbnail(img, maxThumbWidth, maxThumbHeight);
+            File f = new File(thumbnailPath + s);
+            try {
+                f.createNewFile();
+                ImageIO.write(img, "jpg", f);
+            } catch (IOException e) {
+                throw new PhotoWsException("Exception thrown while trying to create thumbnail", e);
+            }
+        }
     }
 
     private static List<String> getAllFilenamesInDirectory(String path) {
