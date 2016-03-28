@@ -1,5 +1,6 @@
 /PhotositeBackend.iml
 /photo-backend.iml
+/target
 .idea
 *.class
 *.war
