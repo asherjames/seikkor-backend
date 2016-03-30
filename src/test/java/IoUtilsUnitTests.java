@@ -23,8 +23,8 @@ public class IoUtilsUnitTests {
     @Test
     public void imageDirectoriesAreCorrectlyUpdated() {
         Properties props = mock(Properties.class);
-        when(props.getProperty("fullsizeImageFolderPath")).thenReturn("C:\\Users\\Asher\\IdeaProjects\\PhotositeBackend\\src\\test\\resources\\images\\fullsize");
-        when(props.getProperty("thumbnailImageFolderPath")).thenReturn("C:\\Users\\Asher\\IdeaProjects\\PhotositeBackend\\src\\test\\resources\\images\\thumbnails");
+        when(props.getProperty("fullsizeImageFolderPath")).thenReturn("C:\\images\\fullsize");
+        when(props.getProperty("thumbnailImageFolderPath")).thenReturn("C:\\images\\thumbnail");
 
         when(props.getProperty("maxThumbnailWidth")).thenReturn("250");
         when(props.getProperty("maxThumbnailHeight")).thenReturn("400");

@@ -37,7 +37,7 @@ public class IoUtils {
         List<String> filenames = getAllFilenamesInDirectory(path);
         List<ImageInfo> info = new ArrayList<>();
         for (String name : filenames) {
-            BufferedImage img = loadImage(name, ImageTypeEnum.FULLSIZE);
+            BufferedImage img = loadImage(name, ImageTypeEnum.FULLSIZE, props);
             info.add(ImageUtils.getInfo(img, name));
         }
         return info;
@@ -54,28 +54,29 @@ public class IoUtils {
         List<String> fullsizeFilenames = getAllFilenamesInDirectory(fullsizePath);
         List<String> thumbnailFilenames = getAllFilenamesInDirectory(thumbnailPath);
         List<String> thumbnailsNeeded = new ArrayList<>(CollectionUtils.subtract(fullsizeFilenames, thumbnailFilenames));
+        Log.info("Thumbnails needed: " + thumbnailsNeeded.toString());
 
         if (thumbnailsNeeded.isEmpty())
             return;
         for(String s : thumbnailsNeeded) {
-            BufferedImage img = loadImage(s, ImageTypeEnum.FULLSIZE);
-            ImageUtils.scaleToThumbnail(img, maxThumbWidth, maxThumbHeight);
-            File f = new File(thumbnailPath + s);
+            BufferedImage img = loadImage(s, ImageTypeEnum.FULLSIZE, props);
+            Log.info("Loaded " + s + " and attempting to scale...");
+            BufferedImage scaledImg = ImageUtils.scaleToThumbnail(img, maxThumbWidth, maxThumbHeight);
+            File f = new File(thumbnailPath + "\\" + s);
             try {
                 f.createNewFile();
-                ImageIO.write(img, "jpg", f);
+                ImageIO.write(scaledImg, "jpg", f);
             } catch (IOException e) {
                 throw new PhotoWsException("Exception thrown while trying to create thumbnail", e);
             }
         }
     }
 
-    private static BufferedImage loadImage(String imageName, ImageTypeEnum type) {
+    private static BufferedImage loadImage(String imageName, ImageTypeEnum type, Properties props) {
         Log.info("Attempting to load " + imageName + "...");
-        Properties props = loadProperties();
         String path = type == ImageTypeEnum.FULLSIZE ?
-                props.getProperty(FULLSIZE_IMAGE_FOLDER_PATH_PROPERTY) + imageName :
-                props.getProperty(THUMBNAIL_IMAGE_FOLDER_PATH_PROPERTY) + imageName;
+                props.getProperty(FULLSIZE_IMAGE_FOLDER_PATH_PROPERTY) + "\\" + imageName :
+                props.getProperty(THUMBNAIL_IMAGE_FOLDER_PATH_PROPERTY) +  "\\" + imageName;
         Log.debug("Loading " + imageName + " from " + path);
         BufferedImage img = null;
         try {
@@ -94,7 +95,7 @@ public class IoUtils {
         File[] files = imageFolder.listFiles();
         List<String> filenames = new ArrayList<>();
         for (File f : files) {
-            String name = FilenameUtils.getBaseName(f.getName());
+            String name = f.getName();
             filenames.add(name);
         }
         return filenames;
