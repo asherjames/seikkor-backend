@@ -22,7 +22,7 @@ public class PhotoResourceImpl implements PhotoResource {
         return Response.ok(gson.toJson(filenames)).build();
     }
 
-    public Response getFullsizePhoto(String filename) {
+    /*public Response getFullsizePhoto(String filename) {
         BufferedImage img = IoUtils.loadImage(filename, ImageTypeEnum.FULLSIZE);
         if (img != null) {
             Log.info("Fullsize image found, returning image...");
@@ -42,5 +42,5 @@ public class PhotoResourceImpl implements PhotoResource {
             Log.info("Thumbnail image not found, returning 400...");
             return Response.status(400).build();
         }
-    }
+    }*/
 }

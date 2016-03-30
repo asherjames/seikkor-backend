@@ -18,7 +18,7 @@ public interface PhotoResource {
     @Produces(MediaType.APPLICATION_JSON)
     Response getAllPhotoPaths();
 
-    @GET
+    /*@GET
     @Path("/photo/{photoname}")
     @Produces("image/jpeg")
     Response getFullsizePhoto(@PathParam("photoname") String name);
@@ -26,5 +26,5 @@ public interface PhotoResource {
     @GET
     @Path("/photo/thumb/{photoname}")
     @Produces("image/jpeg")
-    Response getThumbnailPhoto(@PathParam("photoname") String name);
+    Response getThumbnailPhoto(@PathParam("photoname") String name);*/
 }

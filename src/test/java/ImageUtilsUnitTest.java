@@ -2,8 +2,8 @@ import ash.java.photo.ImageInfo;
 import ash.java.photo.ImageUtils;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import static org.mockito.Mockito.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -13,14 +13,17 @@ import java.awt.image.BufferedImage;
 /**
  * Created by Asher on 28/03/2016.
  */
-public class ImageUtilsUnitTests {
+public class ImageUtilsUnitTest {
 
     private static BufferedImage imgLongerW;
     private static BufferedImage imgLongerH;
     private static BufferedImage squareImg;
 
+    private static final Logger Log = LoggerFactory.getLogger(ImageUtilsUnitTest.class);
+
     @BeforeClass
     public static void createBufferedImage() {
+        Log.info("Creating test BufferedImage's");
         imgLongerW = new BufferedImage(200, 150, BufferedImage.TYPE_INT_RGB);
         imgLongerH = new BufferedImage(150, 200, BufferedImage.TYPE_INT_RGB);
         squareImg = new BufferedImage(100, 100, BufferedImage.TYPE_INT_RGB);

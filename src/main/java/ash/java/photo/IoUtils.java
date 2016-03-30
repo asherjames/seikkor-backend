@@ -29,22 +29,6 @@ public class IoUtils {
 
     private IoUtils() {}
 
-    public static BufferedImage loadImage(String imageName, ImageTypeEnum type) {
-        Log.info("Attempting to load " + imageName + "...");
-        Properties props = loadProperties();
-        String path = type == ImageTypeEnum.FULLSIZE ?
-                props.getProperty(FULLSIZE_IMAGE_FOLDER_PATH_PROPERTY) + imageName :
-                props.getProperty(THUMBNAIL_IMAGE_FOLDER_PATH_PROPERTY) + imageName;
-        Log.debug("Loading " + imageName + " from " + path);
-        BufferedImage img = null;
-        try {
-            img = ImageIO.read(new File(path));
-        } catch (IOException e) {
-            throw new PhotoWsException("IO Exception while loading image", e);
-        }
-        return img;
-    }
-
     public static List<ImageInfo> getInfoForAllImages() {
         Log.info("Attempting to read filenames from directory");
         Properties props = loadProperties();
@@ -84,6 +68,22 @@ public class IoUtils {
                 throw new PhotoWsException("Exception thrown while trying to create thumbnail", e);
             }
         }
+    }
+
+    private static BufferedImage loadImage(String imageName, ImageTypeEnum type) {
+        Log.info("Attempting to load " + imageName + "...");
+        Properties props = loadProperties();
+        String path = type == ImageTypeEnum.FULLSIZE ?
+                props.getProperty(FULLSIZE_IMAGE_FOLDER_PATH_PROPERTY) + imageName :
+                props.getProperty(THUMBNAIL_IMAGE_FOLDER_PATH_PROPERTY) + imageName;
+        Log.debug("Loading " + imageName + " from " + path);
+        BufferedImage img = null;
+        try {
+            img = ImageIO.read(new File(path));
+        } catch (IOException e) {
+            throw new PhotoWsException("IO Exception while loading image", e);
+        }
+        return img;
     }
 
     private static List<String> getAllFilenamesInDirectory(String path) {
