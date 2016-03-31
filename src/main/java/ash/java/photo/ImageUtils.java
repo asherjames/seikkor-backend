@@ -20,10 +20,10 @@ public class ImageUtils {
         try {
             if (img.getWidth() >= img.getHeight()) {
                 Log.info("Img width larger than height, scaling accordingly...");
-                return Scalr.resize(img, Scalr.Method.ULTRA_QUALITY, Scalr.Mode.FIT_TO_WIDTH, maxWidth, maxHeight);
+                return Scalr.resize(img, Scalr.Method.QUALITY, Scalr.Mode.FIT_TO_WIDTH, maxWidth, maxHeight);
             } else {
                 Log.info("Img height larger than width, scaling accordingly...");
-                return Scalr.resize(img, Scalr.Method.ULTRA_QUALITY, Scalr.Mode.FIT_TO_HEIGHT, maxWidth, maxHeight);
+                return Scalr.resize(img, Scalr.Method.QUALITY, Scalr.Mode.FIT_TO_HEIGHT, maxWidth, maxHeight);
             }
         } catch (IllegalArgumentException | ImagingOpException e) {
             throw new PhotoWsException("Exception while creating thumbnail", e);

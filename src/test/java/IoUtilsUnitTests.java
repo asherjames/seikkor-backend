@@ -1,6 +1,5 @@
 import ash.java.photo.ImageInfo;
 import ash.java.photo.IoUtils;
-import ash.java.photo.PhotoWsException;
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -112,13 +111,5 @@ public class IoUtilsUnitTests {
         } catch (IOException e) {
             Log.error("IO exception while attempting to delete directory contents");
         }
-    }
-
-    private static String[] getAllFilenamesInDirectory(String path) {
-        File imageFolder = new File(path);
-        if (!imageFolder.isDirectory()) {
-            throw new PhotoWsException("File specified in config is not a directory!");
-        }
-        return imageFolder.list();
     }
 }

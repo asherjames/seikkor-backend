@@ -10,7 +10,7 @@ import javax.ws.rs.core.Response;
 /**
  * Created by Asher on 20/03/2016.
  */
-
+@Path("/")
 public interface PhotoResource {
 
     @GET

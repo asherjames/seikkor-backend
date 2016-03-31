@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>ash.java.photo</groupId>
-    <artifactId>photo-backend</artifactId>
-    <version>0.0.1</version>
+    <artifactId>seikkor</artifactId>
+    <version>1.0.0</version>
     <packaging>war</packaging>
 
 
@@ -107,6 +107,7 @@
                 <version>2.6</version>
                 <configuration>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
+                    <warName>seikkor</warName>
                 </configuration>
             </plugin>
 

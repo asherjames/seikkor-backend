@@ -1,7 +1,6 @@
 package ash.java.photo;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,7 +29,7 @@ public class IoUtils {
     private IoUtils() {}
 
     public static List<ImageInfo> getInfoForAllImages(Properties props) {
-        Log.info("Attempting to read filenames from directory");
+        Log.info("Attempting to read filenames from directory...");
         updateImageDirectories(props);
         String path = props.getProperty(FULLSIZE_IMAGE_FOLDER_PATH_PROPERTY);
         List<String> filenames = getAllFilenamesInDirectory(path);
@@ -43,12 +42,15 @@ public class IoUtils {
     }
 
     public static void updateImageDirectories(Properties props) {
-        Log.info("Updating directories");
+        Log.info("Updating directories...");
         String fullsizePath = props.getProperty(FULLSIZE_IMAGE_FOLDER_PATH_PROPERTY);
         String thumbnailPath = props.getProperty(THUMBNAIL_IMAGE_FOLDER_PATH_PROPERTY);
+        Log.info("Fullsize path is: " + fullsizePath);
+        Log.info("Thumbnail path is: " + thumbnailPath);
 
         int maxThumbWidth = Integer.parseInt(props.getProperty(THUMBNAIL_MAX_WIDTH_PROPERTY));
         int maxThumbHeight = Integer.parseInt(props.getProperty(THUMBNAIL_MAX_HEIGHT_PROPERTY));
+        Log.info("Max thumbnail width: " + maxThumbWidth + " , max thumbnail height: " + maxThumbHeight);
 
         List<String> fullsizeFilenames = getAllFilenamesInDirectory(fullsizePath);
         List<String> thumbnailFilenames = getAllFilenamesInDirectory(thumbnailPath);
@@ -85,6 +87,7 @@ public class IoUtils {
     }
 
     private static List<String> getAllFilenamesInDirectory(String path) {
+        Log.info("Attempting to get all filenames in directory...");
         File imageFolder = new File(path);
         if (!imageFolder.isDirectory()) {
             throw new PhotoWsException("File specified in config is not a directory!");
