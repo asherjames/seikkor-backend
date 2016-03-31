@@ -19,7 +19,6 @@ import static org.hamcrest.Matchers.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
@@ -73,10 +72,18 @@ public class IoUtilsUnitTests {
     }
 
     @Test
-    public void imageInfoIsCorrectlyCollected() {
+    public void imageInfoArrayHasCorrectLength() {
         List<ImageInfo> imageInfos = IoUtils.getInfoForAllImages(props);
-        Log.info(imageInfos.toString());
         assertThat(imageInfos, iterableWithSize(5));
+    }
+
+    @Test
+    public void imageInfoArrayContainsCorrectFilenames() {
+        List<ImageInfo> imageInfos = IoUtils.getInfoForAllImages(props);
+        ImageInfo testInfo = new ImageInfo("0.jpg", 1000, 1500);
+        Log.info("ImageInfo from IoUtils:" + imageInfos.get(0).toString());
+        Log.info("ImageInfo from test:" + testInfo.toString());
+        assertThat(imageInfos.get(0), equalTo(testInfo));
     }
 
     private boolean checkDirectoriesContainSameFilenames(String firstFolder, String secondFolder) {
