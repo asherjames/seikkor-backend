@@ -13,6 +13,11 @@ import java.util.Properties;
  */
 public class IoUtilsUnitTests {
 
+    private final String TEST_FULLSIZE_FOLDER = "C:\\images\\fullsize";
+    private final String TEST_THUMBNAIL_FOLDER = "C:\\images\\thumbnail";
+    private final String TEST_MAX_THUMBNAIL_WIDTH = "250";
+    private final String TEST_MAX_THUMBNAIL_HEIGHT = "400";
+
     @Test
     public void propertiesAreCorrectlyLoaded() {
         Properties props = IoUtils.loadProperties();
@@ -23,11 +28,10 @@ public class IoUtilsUnitTests {
     @Test
     public void imageDirectoriesAreCorrectlyUpdated() {
         Properties props = mock(Properties.class);
-        when(props.getProperty("fullsizeImageFolderPath")).thenReturn("C:\\images\\fullsize");
-        when(props.getProperty("thumbnailImageFolderPath")).thenReturn("C:\\images\\thumbnail");
-
-        when(props.getProperty("maxThumbnailWidth")).thenReturn("250");
-        when(props.getProperty("maxThumbnailHeight")).thenReturn("400");
+        when(props.getProperty("fullsizeImageFolderPath")).thenReturn(TEST_FULLSIZE_FOLDER);
+        when(props.getProperty("thumbnailImageFolderPath")).thenReturn(TEST_THUMBNAIL_FOLDER);
+        when(props.getProperty("maxThumbnailWidth")).thenReturn(TEST_MAX_THUMBNAIL_WIDTH);
+        when(props.getProperty("maxThumbnailHeight")).thenReturn(TEST_MAX_THUMBNAIL_HEIGHT);
 
         IoUtils.updateImageDirectories(props);
     }
