@@ -29,15 +29,14 @@ public class IoUtils {
 
     private IoUtils() {}
 
-    public static List<ImageInfo> getInfoForAllImages() {
+    public static List<ImageInfo> getInfoForAllImages(Properties props) {
         Log.info("Attempting to read filenames from directory");
-        Properties props = loadProperties();
         updateImageDirectories(props);
         String path = props.getProperty(FULLSIZE_IMAGE_FOLDER_PATH_PROPERTY);
         List<String> filenames = getAllFilenamesInDirectory(path);
         List<ImageInfo> info = new ArrayList<>();
         for (String name : filenames) {
-            BufferedImage img = loadImage(name, ImageTypeEnum.FULLSIZE, props);
+            BufferedImage img = loadImage(name, props);
             info.add(ImageUtils.getInfo(img, name));
         }
         return info;
@@ -59,7 +58,7 @@ public class IoUtils {
         if (thumbnailsNeeded.isEmpty())
             return;
         for(String s : thumbnailsNeeded) {
-            BufferedImage img = loadImage(s, ImageTypeEnum.FULLSIZE, props);
+            BufferedImage img = loadImage(s, props);
             Log.info("Loaded " + s + " and attempting to scale...");
             BufferedImage scaledImg = ImageUtils.scaleToThumbnail(img, maxThumbWidth, maxThumbHeight);
             File f = new File(thumbnailPath + "\\" + s);
@@ -72,11 +71,9 @@ public class IoUtils {
         }
     }
 
-    private static BufferedImage loadImage(String imageName, ImageTypeEnum type, Properties props) {
+    private static BufferedImage loadImage(String imageName, Properties props) {
         Log.info("Attempting to load " + imageName + "...");
-        String path = type == ImageTypeEnum.FULLSIZE ?
-                props.getProperty(FULLSIZE_IMAGE_FOLDER_PATH_PROPERTY) + "\\" + imageName :
-                props.getProperty(THUMBNAIL_IMAGE_FOLDER_PATH_PROPERTY) +  "\\" + imageName;
+        String path = props.getProperty(FULLSIZE_IMAGE_FOLDER_PATH_PROPERTY) + "\\" + imageName;
         Log.debug("Loading " + imageName + " from " + path);
         BufferedImage img = null;
         try {

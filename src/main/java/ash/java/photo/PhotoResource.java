@@ -18,13 +18,4 @@ public interface PhotoResource {
     @Produces(MediaType.APPLICATION_JSON)
     Response getAllPhotoPaths();
 
-    /*@GET
-    @Path("/photo/{photoname}")
-    @Produces("image/jpeg")
-    Response getFullsizePhoto(@PathParam("photoname") String name);
-
-    @GET
-    @Path("/photo/thumb/{photoname}")
-    @Produces("image/jpeg")
-    Response getThumbnailPhoto(@PathParam("photoname") String name);*/
 }
