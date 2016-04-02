@@ -2,6 +2,8 @@ package ash.java.photo;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.awt.*;
+
 /**
  * Created by Asher on 23/03/2016.
  */
@@ -12,11 +14,11 @@ public class ImageInfo {
     @SerializedName("w") private int width;
     @SerializedName("h") private int height;
 
-    public ImageInfo(String filename, int width, int height) {
+    public ImageInfo(String filename, Dimension dimensions) {
         this.filename = filename;
         this.thumbnail = filename;
-        this.width = width;
-        this.height = height;
+        this.width = dimensions.width;
+        this.height = dimensions.height;
     }
 
     public String getFilename() {

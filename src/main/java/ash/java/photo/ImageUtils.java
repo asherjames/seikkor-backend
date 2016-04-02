@@ -30,11 +30,4 @@ public class ImageUtils {
         }
 
     }
-
-    public static ImageInfo getInfo(BufferedImage img, String name) {
-        int w = img.getWidth();
-        int h = img.getHeight();
-        return new ImageInfo(name, w, h);
-    }
-
 }

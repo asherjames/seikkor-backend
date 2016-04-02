@@ -15,6 +15,7 @@ public class PhotoResourceImpl implements PhotoResource {
 
     private final Logger Log = LoggerFactory.getLogger(PhotoResourceImpl.class);
 
+    @Override
     public Response getAllPhotoPaths() {
         Properties props = IoUtils.loadProperties();
         List<ImageInfo> filenames = IoUtils.getInfoForAllImages(props);

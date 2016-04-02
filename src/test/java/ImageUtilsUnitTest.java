@@ -1,4 +1,3 @@
-import ash.java.photo.ImageInfo;
 import ash.java.photo.ImageUtils;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -64,16 +63,5 @@ public class ImageUtilsUnitTest {
 
         assertThat(returnedImage.getWidth(), is(50));
         assertThat(returnedImage.getHeight(), is(50));
-    }
-
-    @Test
-    public void imageInfoObjectHasCorrectAttributes() {
-        BufferedImage img = new BufferedImage(150, 100, BufferedImage.TYPE_INT_RGB);
-
-        ImageInfo info = ImageUtils.getInfo(img, "image01");
-
-        assertThat(info, hasProperty("filename", equalTo("image01")));
-        assertThat(info, hasProperty("width", equalTo(150)));
-        assertThat(info, hasProperty("height", equalTo(100)));
     }
 }

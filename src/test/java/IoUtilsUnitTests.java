@@ -1,5 +1,6 @@
 import ash.java.photo.ImageInfo;
 import ash.java.photo.IoUtils;
+import ash.java.photo.PhotoWsException;
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -15,6 +16,7 @@ import static org.mockito.Mockito.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -58,7 +60,7 @@ public class IoUtilsUnitTests {
     public void propertiesAreCorrectlyLoaded() {
         Properties props = IoUtils.loadProperties();
 
-        assertThat(props.getProperty("fullsizeImageFolderPath"), is("images"));
+        assertThat(props.getProperty("fullsizeImageFolderPath"), is("C:/images/fullsize"));
     }
 
     @Test
@@ -73,13 +75,14 @@ public class IoUtilsUnitTests {
     @Test
     public void imageInfoArrayHasCorrectLength() {
         List<ImageInfo> imageInfos = IoUtils.getInfoForAllImages(props);
+        Log.info("First image data: " + imageInfos.get(0).toString());
         assertThat(imageInfos, iterableWithSize(5));
     }
 
     @Test
-    public void imageInfoArrayContainsCorrectFilenames() {
+    public void imageInfoArrayContainsCorrectImageInfoObject() {
         List<ImageInfo> imageInfos = IoUtils.getInfoForAllImages(props);
-        ImageInfo testInfo = new ImageInfo("0.jpg", 1000, 1500);
+        ImageInfo testInfo = new ImageInfo("0.jpg", new Dimension(1000, 1500));
         Log.info("ImageInfo from IoUtils:" + imageInfos.get(0).toString());
         Log.info("ImageInfo from test:" + testInfo.toString());
         assertThat(imageInfos.get(0), equalTo(testInfo));
@@ -109,7 +112,7 @@ public class IoUtilsUnitTests {
         try {
             FileUtils.cleanDirectory(new File(path));
         } catch (IOException e) {
-            Log.error("IO exception while attempting to delete directory contents");
+            throw new PhotoWsException("IO exception while attempting to delete directory contents", e);
         }
     }
 }
