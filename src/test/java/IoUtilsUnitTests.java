@@ -50,11 +50,11 @@ public class IoUtilsUnitTests {
         createDummyImages(TEST_FULLSIZE_FOLDER, 5);
     }
 
-    @After
+    /*@After
     public void cleanupDirectories() {
         deleteDirectoryContents(TEST_FULLSIZE_FOLDER);
         deleteDirectoryContents(TEST_THUMBNAIL_FOLDER);
-    }
+    }*/
 
     @Test
     public void propertiesAreCorrectlyLoaded() {
@@ -65,8 +65,6 @@ public class IoUtilsUnitTests {
 
     @Test
     public void imageDirectoriesAreCorrectlyUpdated() {
-        Log.info("Attempting to delete directory contents...");
-
         IoUtils.updateImageDirectories(props);
 
         assertThat(checkDirectoriesContainSameFilenames(TEST_FULLSIZE_FOLDER, TEST_THUMBNAIL_FOLDER), is(true));
@@ -77,6 +75,8 @@ public class IoUtilsUnitTests {
         List<ImageInfo> imageInfos = IoUtils.getInfoForAllImages(props);
         Log.info("First image data: " + imageInfos.get(0).toString());
         assertThat(imageInfos, iterableWithSize(5));
+        deleteDirectoryContents(TEST_FULLSIZE_FOLDER);
+        deleteDirectoryContents(TEST_THUMBNAIL_FOLDER);
     }
 
     @Test
