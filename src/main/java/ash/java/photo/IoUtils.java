@@ -57,13 +57,19 @@ public class IoUtils {
         List<String> thumbnailsNeeded = new ArrayList<>(CollectionUtils.subtract(fullsizeFilenames, thumbnailFilenames));
         Log.info("Thumbnails needed: " + thumbnailsNeeded.toString());
 
+        if (!thumbnailsNeeded.isEmpty())
+            createAndSaveThumbnails(thumbnailsNeeded, props);
+    }
+
+    private static void createAndSaveThumbnails(List<String> thumbnailsNeeded, PropertiesWrapper props) {
         if (thumbnailsNeeded.isEmpty())
             return;
         for(String s : thumbnailsNeeded) {
             BufferedImage img = loadBufferedImage(s, props);
             Log.info("Loaded " + s + " and attempting to scale...");
-            BufferedImage scaledImg = ImageUtils.scaleToThumbnail(img, maxThumbWidth, maxThumbHeight);
-            File f = new File(createAbsolutePath(thumbnailPath, s));
+            BufferedImage scaledImg = ImageUtils.scaleToThumbnail(img, props.getThumbnailWidth(),
+                    props.getThumbnailHeight());
+            File f = new File(createAbsolutePath(props.getThumbnailPath(), s));
             try {
                 f.createNewFile();
                 ImageIO.write(scaledImg, "jpg", f);
@@ -73,26 +79,9 @@ public class IoUtils {
         }
     }
 
-    private static void createAndSaveThumbnails(List<String> thumbnailsNeeded, ) {
-        if (thumbnailsNeeded.isEmpty())
-            return;
-        for(String s : thumbnailsNeeded) {
-            BufferedImage img = loadBufferedImage(s, props);
-            Log.info("Loaded " + s + " and attempting to scale...");
-            BufferedImage scaledImg = ImageUtils.scaleToThumbnail(img, maxThumbWidth, maxThumbHeight);
-            File f = new File(createAbsolutePath(thumbnailPath, s));
-            try {
-                f.createNewFile();
-                ImageIO.write(scaledImg, "jpg", f);
-            } catch (IOException e) {
-                throw new PhotoWsException("Exception thrown while trying to create thumbnail", e);
-            }
-        }
-    }
-
-    private static BufferedImage loadBufferedImage(String imageName, Properties props) {
+    private static BufferedImage loadBufferedImage(String imageName, PropertiesWrapper props) {
         Log.info("Attempting to load " + imageName + "...");
-        String path = createAbsolutePath(props.getProperty(FULLSIZE_IMAGE_FOLDER_PATH_PROPERTY), imageName);
+        String path = createAbsolutePath(props.getFullsizePath(), imageName);
         Log.debug("Loading " + imageName + " from " + path);
         BufferedImage img = null;
         try {
