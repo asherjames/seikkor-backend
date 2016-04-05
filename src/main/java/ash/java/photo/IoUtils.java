@@ -22,20 +22,14 @@ import java.util.Properties;
  */
 public class IoUtils {
 
-    private static final String PROPERTIES_FILE = "config.properties";
-    private static final String FULLSIZE_IMAGE_FOLDER_PATH_PROPERTY = "fullsizeImageFolderPath";
-    private static final String THUMBNAIL_IMAGE_FOLDER_PATH_PROPERTY = "thumbnailImageFolderPath";
-    private static final String THUMBNAIL_MAX_WIDTH_PROPERTY = "maxThumbnailWidth";
-    private static final String THUMBNAIL_MAX_HEIGHT_PROPERTY = "maxThumbnailHeight";
-
     private static final Logger Log = LoggerFactory.getLogger(IoUtils.class);
 
     private IoUtils() {}
 
-    public static List<ImageInfo> getInfoForAllImages(Properties props) {
+    public static List<ImageInfo> getInfoForAllImages(PropertiesWrapper props) {
         Log.info("Attempting to read filenames from directory...");
         updateImageDirectories(props);
-        String fullsizePath = props.getProperty(FULLSIZE_IMAGE_FOLDER_PATH_PROPERTY);
+        String fullsizePath = props.getFullsizePath();
         List<String> filenames = getAllFilenamesInDirectory(fullsizePath);
         List<ImageInfo> info = new ArrayList<>();
         for (String name : filenames) {
@@ -46,15 +40,16 @@ public class IoUtils {
         return info;
     }
 
-    public static void updateImageDirectories(Properties props) {
+    public static void updateImageDirectories(PropertiesWrapper props) {
         Log.info("Updating directories...");
-        String fullsizePath = props.getProperty(FULLSIZE_IMAGE_FOLDER_PATH_PROPERTY);
-        String thumbnailPath = props.getProperty(THUMBNAIL_IMAGE_FOLDER_PATH_PROPERTY);
+
+        String fullsizePath = props.getFullsizePath();
+        String thumbnailPath = props.getThumbnailPath();
         Log.info("Fullsize path is: " + fullsizePath);
         Log.info("Thumbnail path is: " + thumbnailPath);
 
-        int maxThumbWidth = Integer.parseInt(props.getProperty(THUMBNAIL_MAX_WIDTH_PROPERTY));
-        int maxThumbHeight = Integer.parseInt(props.getProperty(THUMBNAIL_MAX_HEIGHT_PROPERTY));
+        int maxThumbWidth = props.getThumbnailWidth();
+        int maxThumbHeight = props.getThumbnailHeight();
         Log.info("Max thumbnail width: " + maxThumbWidth + " , max thumbnail height: " + maxThumbHeight);
 
         List<String> fullsizeFilenames = getAllFilenamesInDirectory(fullsizePath);
@@ -62,6 +57,23 @@ public class IoUtils {
         List<String> thumbnailsNeeded = new ArrayList<>(CollectionUtils.subtract(fullsizeFilenames, thumbnailFilenames));
         Log.info("Thumbnails needed: " + thumbnailsNeeded.toString());
 
+        if (thumbnailsNeeded.isEmpty())
+            return;
+        for(String s : thumbnailsNeeded) {
+            BufferedImage img = loadBufferedImage(s, props);
+            Log.info("Loaded " + s + " and attempting to scale...");
+            BufferedImage scaledImg = ImageUtils.scaleToThumbnail(img, maxThumbWidth, maxThumbHeight);
+            File f = new File(createAbsolutePath(thumbnailPath, s));
+            try {
+                f.createNewFile();
+                ImageIO.write(scaledImg, "jpg", f);
+            } catch (IOException e) {
+                throw new PhotoWsException("Exception thrown while trying to create thumbnail", e);
+            }
+        }
+    }
+
+    private static void createAndSaveThumbnails(List<String> thumbnailsNeeded, ) {
         if (thumbnailsNeeded.isEmpty())
             return;
         for(String s : thumbnailsNeeded) {
@@ -126,19 +138,6 @@ public class IoUtils {
             filenames.add(name);
         }
         return filenames;
-    }
-
-    public static Properties loadProperties() {
-        Log.info("Attempting to load properties...");
-        try {
-            ClassLoader loader = IoUtils.class.getClassLoader();
-            InputStream input = loader.getResourceAsStream(PROPERTIES_FILE);
-            Properties props = new Properties();
-            props.load(input);
-            return props;
-        } catch (IOException e) {
-            throw new PhotoWsException("IO Exception while loading properties", e);
-        }
     }
 
     private static String createAbsolutePath(String base, String filename) {
