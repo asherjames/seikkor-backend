@@ -9,9 +9,7 @@ import static org.hamcrest.Matchers.*;
 
 import java.awt.image.BufferedImage;
 
-/**
- * Created by Asher on 28/03/2016.
- */
+
 public class ImageUtilsUnitTest {
 
     private static BufferedImage imgLongerW;

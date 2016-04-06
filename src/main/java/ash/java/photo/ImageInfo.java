@@ -5,9 +5,6 @@ import com.google.gson.annotations.SerializedName;
 import java.awt.Dimension;
 
 
-/**
- * Created by Asher on 23/03/2016.
- */
 public class ImageInfo {
 
     @SerializedName("src") private String filename;

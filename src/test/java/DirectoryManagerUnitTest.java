@@ -22,9 +22,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
-/**
- * Created by Asher on 28/03/2016.
- */
+
 public class DirectoryManagerUnitTest {
 
     private final String TEST_FULLSIZE_FOLDER = "C:\\images\\fullsize";

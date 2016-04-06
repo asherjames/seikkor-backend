@@ -7,9 +7,7 @@ import org.slf4j.LoggerFactory;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImagingOpException;
 
-/**
- * Created by Asher on 20/03/2016.
- */
+
 public class ImageUtils {
 
     private static final Logger Log = LoggerFactory.getLogger(ImageUtils.class);
@@ -17,19 +15,19 @@ public class ImageUtils {
     private ImageUtils() {}
 
     public static BufferedImage scaleToThumbnail(BufferedImage img, int maxWidth, int maxHeight) {
-        BufferedImage scaledImage = null;
         try {
             if (img.getWidth() >= img.getHeight()) {
                 Log.info("Img width larger than height, scaling accordingly...");
-                scaledImage = Scalr.resize(img, Scalr.Method.QUALITY, Scalr.Mode.FIT_TO_WIDTH, maxWidth, maxHeight);
+                return Scalr.resize(img, Scalr.Method.QUALITY, Scalr.Mode.FIT_TO_WIDTH, maxWidth, maxHeight);
             } else {
                 Log.info("Img height larger than width, scaling accordingly...");
-                scaledImage = Scalr.resize(img, Scalr.Method.QUALITY, Scalr.Mode.FIT_TO_HEIGHT, maxWidth, maxHeight);
+                return Scalr.resize(img, Scalr.Method.QUALITY, Scalr.Mode.FIT_TO_HEIGHT, maxWidth, maxHeight);
             }
         } catch (IllegalArgumentException | ImagingOpException e) {
-            Log.error("Incorrect usage of Scalr");
+            Log.error("Incorrect usage of Scalr, returning default image...");
             e.printStackTrace();
         }
-        return scaledImage;
+        //return default image if Scalr is used incorrectly
+        return new BufferedImage(100, 100, BufferedImage.TYPE_INT_RGB);
     }
 }

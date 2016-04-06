@@ -7,9 +7,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-/**
- * Created by AsherJ on 6/04/2016.
- */
 public class PropertiesLoader {
 
     private static final String PROPERTIES_FILENAME = "config.properties";

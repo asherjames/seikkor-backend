@@ -15,9 +15,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-/**
- * Created by Asher on 23/03/2016.
- */
 public class DirectoryManager {
 
     private final Logger Log = LoggerFactory.getLogger(DirectoryManager.class);

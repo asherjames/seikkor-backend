@@ -2,9 +2,6 @@ package ash.java.photo;
 
 import java.util.Properties;
 
-/**
- * Created by AsherJ on 6/04/2016.
- */
 public class PropertiesWrapper {
 
     private Properties props;

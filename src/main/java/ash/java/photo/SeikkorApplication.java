@@ -5,9 +5,6 @@ import javax.ws.rs.core.Application;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * Created by Asher on 20/03/2016.
- */
 
 @ApplicationPath("/photo")
 public class SeikkorApplication extends Application {

@@ -5,9 +5,7 @@ import com.google.gson.Gson;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
-/**
- * Created by Asher on 20/03/2016.
- */
+
 public class SeikkorResourceImpl implements SeikkorResource {
 
     @Override
