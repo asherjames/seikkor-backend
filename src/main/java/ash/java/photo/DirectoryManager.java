@@ -20,13 +20,22 @@ import java.util.List;
  */
 public class DirectoryManager {
 
-    private static final Logger Log = LoggerFactory.getLogger(DirectoryManager.class);
+    private final Logger Log = LoggerFactory.getLogger(DirectoryManager.class);
 
-    private DirectoryManager() {}
+    private String fullsizePath;
+    private String thumbnailPath;
+    private int maxThumbWidth;
+    private int maxThumbHeight;
 
-    public static List<ImageInfo> getInfoForAllImages(PropertiesWrapper props) {
-        Log.info("Attempting to read filenames from directory...");
-        updateImageDirectories(props);
+    public DirectoryManager(PropertiesWrapper props) {
+        this.fullsizePath = props.getFullsizePath();
+        this.thumbnailPath = props.getThumbnailPath();
+        this.maxThumbWidth = props.getThumbnailWidth();
+        this.maxThumbHeight = props.getThumbnailHeight();
+    }
+
+    public List<ImageInfo> getInfoForAllImages(PropertiesWrapper props) {
+        updateImageDirectories();
         String fullsizePath = props.getFullsizePath();
         List<String> filenames = getAllFilenamesInDirectory(fullsizePath);
         List<ImageInfo> info = new ArrayList<>();
@@ -38,35 +47,26 @@ public class DirectoryManager {
         return info;
     }
 
-    public static void updateImageDirectories(PropertiesWrapper props) {
+    public void updateImageDirectories() {
         Log.info("Updating directories...");
-
-        String fullsizePath = props.getFullsizePath();
-        String thumbnailPath = props.getThumbnailPath();
-        Log.info("Fullsize path is: " + fullsizePath + "\nThumbnail path is: " + thumbnailPath);
-
-        int maxThumbWidth = props.getThumbnailWidth();
-        int maxThumbHeight = props.getThumbnailHeight();
-        Log.info("Max thumbnail width: " + maxThumbWidth + " , max thumbnail height: " + maxThumbHeight);
 
         List<String> fullsizeFilenames = getAllFilenamesInDirectory(fullsizePath);
         List<String> thumbnailFilenames = getAllFilenamesInDirectory(thumbnailPath);
         List<String> thumbnailsNeeded = new ArrayList<>(CollectionUtils.subtract(fullsizeFilenames, thumbnailFilenames));
         Log.info("Thumbnails needed: " + thumbnailsNeeded.toString());
 
-        if (!thumbnailsNeeded.isEmpty())
-            createAndSaveThumbnails(thumbnailsNeeded, props);
+        if (!thumbnailsNeeded.isEmpty()) {
+            createAndSaveThumbnails(thumbnailsNeeded);
+        }
     }
 
-    private static void createAndSaveThumbnails(List<String> thumbnailsNeeded, PropertiesWrapper props) {
-        if (thumbnailsNeeded.isEmpty())
-            return;
+    private void createAndSaveThumbnails(List<String> thumbnailsNeeded) {
         for(String s : thumbnailsNeeded) {
-            BufferedImage img = loadBufferedImage(s, props);
+            BufferedImage img = loadFullsizeBufferedImage(s);
             Log.info("Loaded " + s + " and attempting to scale...");
-            BufferedImage scaledImg = ImageUtils.scaleToThumbnail(img, props.getThumbnailWidth(),
-                    props.getThumbnailHeight());
-            File f = new File(createAbsolutePath(props.getThumbnailPath(), s));
+            BufferedImage scaledImg = ImageUtils.scaleToThumbnail(img, maxThumbWidth,
+                    maxThumbHeight);
+            File f = new File(createAbsolutePath(thumbnailPath, s));
             try {
                 f.createNewFile();
                 ImageIO.write(scaledImg, "jpg", f);
@@ -76,9 +76,8 @@ public class DirectoryManager {
         }
     }
 
-    private static BufferedImage loadBufferedImage(String imageName, PropertiesWrapper props) {
-        Log.info("Attempting to load " + imageName + "...");
-        String path = createAbsolutePath(props.getFullsizePath(), imageName);
+    private BufferedImage loadFullsizeBufferedImage(String imageName) {
+        String path = createAbsolutePath(fullsizePath, imageName);
         Log.debug("Loading " + imageName + " from " + path);
         BufferedImage img = null;
         try {
@@ -89,8 +88,7 @@ public class DirectoryManager {
         return img;
     }
 
-    private static Dimension getImageWidthAndHeight(File img) {
-        Log.info("Getting image width and height for " + img.getAbsolutePath());
+    private Dimension getImageWidthAndHeight(File img) {
         Dimension dim = null;
         try {
             ImageInputStream in = ImageIO.createImageInputStream(img);
@@ -111,8 +109,7 @@ public class DirectoryManager {
         return dim;
     }
 
-    private static List<String> getAllFilenamesInDirectory(String path) {
-        Log.info("Attempting to get all filenames in directory...");
+    private List<String> getAllFilenamesInDirectory(String path) {
         File imageFolder = new File(path);
         if (!imageFolder.isDirectory()) {
             throw new PhotoWsException("File specified in config is not a directory!");

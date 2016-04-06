@@ -1,8 +1,5 @@
 package ash.java.photo;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.Properties;
 
 /**
@@ -15,8 +12,6 @@ public class PropertiesWrapper {
     private final String THUMBNAIL_IMAGE_FOLDER_PATH_PROPERTY = "thumbnailImageFolderPath";
     private final String THUMBNAIL_MAX_WIDTH_PROPERTY = "maxThumbnailWidth";
     private final String THUMBNAIL_MAX_HEIGHT_PROPERTY = "maxThumbnailHeight";
-
-    private final Logger Log = LoggerFactory.getLogger(PropertiesWrapper.class);
 
     public PropertiesWrapper(Properties props) {
         this.props = props;
