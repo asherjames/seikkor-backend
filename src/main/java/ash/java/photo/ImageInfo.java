@@ -2,7 +2,8 @@ package ash.java.photo;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.awt.*;
+import java.awt.Dimension;
+
 
 /**
  * Created by Asher on 23/03/2016.

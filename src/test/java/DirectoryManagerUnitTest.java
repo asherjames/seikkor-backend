@@ -25,25 +25,24 @@ import java.util.Properties;
 /**
  * Created by Asher on 28/03/2016.
  */
-public class IoUtilsUnitTest {
+public class DirectoryManagerUnitTest {
 
     private final String TEST_FULLSIZE_FOLDER = "C:\\images\\fullsize";
     private final String TEST_THUMBNAIL_FOLDER = "C:\\images\\thumbnail";
 
-    private static Properties props;
     private static PropertiesWrapper wrapper;
     private static DirectoryManager manager;
 
-    private final Logger Log = LoggerFactory.getLogger(IoUtilsUnitTest.class);
+    private final Logger Log = LoggerFactory.getLogger(DirectoryManagerUnitTest.class);
 
     @BeforeClass
     public static void mockProperties() {
-        props = mock(Properties.class);
-        when(props.getProperty("fullsizeImageFolderPath")).thenReturn("C:\\images\\fullsize");
-        when(props.getProperty("thumbnailImageFolderPath")).thenReturn("C:\\images\\thumbnail");
-        when(props.getProperty("maxThumbnailWidth")).thenReturn("250");
-        when(props.getProperty("maxThumbnailHeight")).thenReturn("400");
-        manager = new DirectoryManager(new PropertiesWrapper(props));
+        wrapper = mock(PropertiesWrapper.class);
+        when(wrapper.getFullsizePath()).thenReturn("C:\\images\\fullsize");
+        when(wrapper.getThumbnailPath()).thenReturn("C:\\images\\thumbnail");
+        when(wrapper.getThumbnailWidth()).thenReturn(250);
+        when(wrapper.getThumbnailHeight()).thenReturn(400);
+        manager = new DirectoryManager(wrapper);
     }
 
     @Before
