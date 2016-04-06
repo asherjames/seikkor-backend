@@ -32,6 +32,7 @@ public class IoUtilsUnitTest {
 
     private static Properties props;
     private static PropertiesWrapper wrapper;
+    private static DirectoryManager manager;
 
     private final Logger Log = LoggerFactory.getLogger(IoUtilsUnitTest.class);
 
@@ -42,7 +43,7 @@ public class IoUtilsUnitTest {
         when(props.getProperty("thumbnailImageFolderPath")).thenReturn("C:\\images\\thumbnail");
         when(props.getProperty("maxThumbnailWidth")).thenReturn("250");
         when(props.getProperty("maxThumbnailHeight")).thenReturn("400");
-        wrapper = new PropertiesWrapper(props);
+        manager = new DirectoryManager(new PropertiesWrapper(props));
     }
 
     @Before
@@ -65,14 +66,14 @@ public class IoUtilsUnitTest {
 
     @Test
     public void imageDirectoriesAreCorrectlyUpdated() {
-        DirectoryManager.updateImageDirectories(wrapper);
+        manager.updateImageDirectories();
 
         assertThat(checkDirectoriesContainSameFilenames(TEST_FULLSIZE_FOLDER, TEST_THUMBNAIL_FOLDER), is(true));
     }
 
     @Test
     public void imageInfoArrayHasCorrectLength() {
-        List<ImageInfo> imageInfos = DirectoryManager.getInfoForAllImages(wrapper);
+        List<ImageInfo> imageInfos = manager.getInfoForAllImages();
         Log.info("First image data: " + imageInfos.get(0).toString());
         assertThat(imageInfos, iterableWithSize(5));
         deleteDirectoryContents(TEST_FULLSIZE_FOLDER);
@@ -81,7 +82,7 @@ public class IoUtilsUnitTest {
 
     @Test
     public void imageInfoArrayContainsCorrectImageInfoObject() {
-        List<ImageInfo> imageInfos = DirectoryManager.getInfoForAllImages(wrapper);
+        List<ImageInfo> imageInfos = manager.getInfoForAllImages();
         ImageInfo testInfo = new ImageInfo("0.jpg", new Dimension(1000, 1500));
         Log.info("ImageInfo from DirectoryManager:" + imageInfos.get(0).toString());
         Log.info("ImageInfo from test:" + testInfo.toString());
