@@ -1,6 +1,4 @@
-import ash.java.photo.ImageInfo;
-import ash.java.photo.IoUtils;
-import ash.java.photo.PhotoWsException;
+import ash.java.photo.*;
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -27,14 +25,15 @@ import java.util.Properties;
 /**
  * Created by Asher on 28/03/2016.
  */
-public class IoUtilsUnitTests {
+public class IoUtilsUnitTest {
 
     private final String TEST_FULLSIZE_FOLDER = "C:\\images\\fullsize";
     private final String TEST_THUMBNAIL_FOLDER = "C:\\images\\thumbnail";
 
     private static Properties props;
+    private static PropertiesWrapper wrapper;
 
-    private final Logger Log = LoggerFactory.getLogger(IoUtilsUnitTests.class);
+    private final Logger Log = LoggerFactory.getLogger(IoUtilsUnitTest.class);
 
     @BeforeClass
     public static void mockProperties() {
@@ -43,6 +42,7 @@ public class IoUtilsUnitTests {
         when(props.getProperty("thumbnailImageFolderPath")).thenReturn("C:\\images\\thumbnail");
         when(props.getProperty("maxThumbnailWidth")).thenReturn("250");
         when(props.getProperty("maxThumbnailHeight")).thenReturn("400");
+        wrapper = new PropertiesWrapper(props);
     }
 
     @Before
@@ -50,29 +50,29 @@ public class IoUtilsUnitTests {
         createDummyImages(TEST_FULLSIZE_FOLDER, 5);
     }
 
-    /*@After
+    @After
     public void cleanupDirectories() {
         deleteDirectoryContents(TEST_FULLSIZE_FOLDER);
         deleteDirectoryContents(TEST_THUMBNAIL_FOLDER);
-    }*/
+    }
 
     @Test
     public void propertiesAreCorrectlyLoaded() {
-        Properties props = IoUtils.loadProperties();
+        Properties props = PropertiesLoader.loadProperties();
 
         assertThat(props.getProperty("fullsizeImageFolderPath"), is("C:/images/fullsize"));
     }
 
     @Test
     public void imageDirectoriesAreCorrectlyUpdated() {
-        IoUtils.updateImageDirectories(props);
+        DirectoryManager.updateImageDirectories(wrapper);
 
         assertThat(checkDirectoriesContainSameFilenames(TEST_FULLSIZE_FOLDER, TEST_THUMBNAIL_FOLDER), is(true));
     }
 
     @Test
     public void imageInfoArrayHasCorrectLength() {
-        List<ImageInfo> imageInfos = IoUtils.getInfoForAllImages(props);
+        List<ImageInfo> imageInfos = DirectoryManager.getInfoForAllImages(wrapper);
         Log.info("First image data: " + imageInfos.get(0).toString());
         assertThat(imageInfos, iterableWithSize(5));
         deleteDirectoryContents(TEST_FULLSIZE_FOLDER);
@@ -81,9 +81,9 @@ public class IoUtilsUnitTests {
 
     @Test
     public void imageInfoArrayContainsCorrectImageInfoObject() {
-        List<ImageInfo> imageInfos = IoUtils.getInfoForAllImages(props);
+        List<ImageInfo> imageInfos = DirectoryManager.getInfoForAllImages(wrapper);
         ImageInfo testInfo = new ImageInfo("0.jpg", new Dimension(1000, 1500));
-        Log.info("ImageInfo from IoUtils:" + imageInfos.get(0).toString());
+        Log.info("ImageInfo from DirectoryManager:" + imageInfos.get(0).toString());
         Log.info("ImageInfo from test:" + testInfo.toString());
         assertThat(imageInfos.get(0), equalTo(testInfo));
     }

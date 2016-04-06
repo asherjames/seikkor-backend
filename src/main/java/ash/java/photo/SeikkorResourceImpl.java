@@ -6,7 +6,6 @@ import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.core.Response;
 import java.util.List;
-import java.util.Properties;
 
 /**
  * Created by Asher on 20/03/2016.
@@ -17,8 +16,9 @@ public class SeikkorResourceImpl implements SeikkorResource {
 
     @Override
     public Response getAllPhotoPaths() {
-        Properties props = IoUtils.loadProperties();
-        List<ImageInfo> filenames = IoUtils.getInfoForAllImages(props);
+        PropertiesWrapper wrapper = new PropertiesWrapper(PropertiesLoader.loadProperties());
+        List<ImageInfo> filenames = DirectoryManager.getInfoForAllImages(wrapper);
+
         Gson gson = new Gson();
         Log.info("Attempting to convert filename ArrayList to JSON...");
         return Response.ok(gson.toJson(filenames)).build();

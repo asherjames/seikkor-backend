@@ -19,7 +19,7 @@ public class PropertiesLoader {
     public static Properties loadProperties() {
         Log.info("Attempting to load properties...");
         try {
-            ClassLoader loader = IoUtils.class.getClassLoader();
+            ClassLoader loader = DirectoryManager.class.getClassLoader();
             InputStream input = loader.getResourceAsStream(PROPERTIES_FILENAME);
             Properties props = new Properties();
             props.load(input);

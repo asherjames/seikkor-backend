@@ -11,20 +11,18 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Properties;
 
 /**
  * Created by Asher on 23/03/2016.
  */
-public class IoUtils {
+public class DirectoryManager {
 
-    private static final Logger Log = LoggerFactory.getLogger(IoUtils.class);
+    private static final Logger Log = LoggerFactory.getLogger(DirectoryManager.class);
 
-    private IoUtils() {}
+    private DirectoryManager() {}
 
     public static List<ImageInfo> getInfoForAllImages(PropertiesWrapper props) {
         Log.info("Attempting to read filenames from directory...");
@@ -45,8 +43,7 @@ public class IoUtils {
 
         String fullsizePath = props.getFullsizePath();
         String thumbnailPath = props.getThumbnailPath();
-        Log.info("Fullsize path is: " + fullsizePath);
-        Log.info("Thumbnail path is: " + thumbnailPath);
+        Log.info("Fullsize path is: " + fullsizePath + "\nThumbnail path is: " + thumbnailPath);
 
         int maxThumbWidth = props.getThumbnailWidth();
         int maxThumbHeight = props.getThumbnailHeight();
