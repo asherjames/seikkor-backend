@@ -10,13 +10,13 @@ import java.util.Set;
  */
 
 @ApplicationPath("/photo")
-public class PhotoApplication extends Application {
+public class SeikkorApplication extends Application {
 
     private Set<Object> singletons = new HashSet<>();
     private Set<Class<?>> empty = new HashSet<>();
 
-    public PhotoApplication() {
-        singletons.add(new PhotoResourceImpl());
+    public SeikkorApplication() {
+        singletons.add(new SeikkorResourceImpl());
     }
 
     @Override

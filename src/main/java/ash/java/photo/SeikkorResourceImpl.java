@@ -11,9 +11,9 @@ import java.util.Properties;
 /**
  * Created by Asher on 20/03/2016.
  */
-public class PhotoResourceImpl implements PhotoResource {
+public class SeikkorResourceImpl implements SeikkorResource {
 
-    private final Logger Log = LoggerFactory.getLogger(PhotoResourceImpl.class);
+    private final Logger Log = LoggerFactory.getLogger(SeikkorResourceImpl.class);
 
     @Override
     public Response getAllPhotoPaths() {
