@@ -17,17 +17,19 @@ public class ImageUtils {
     private ImageUtils() {}
 
     public static BufferedImage scaleToThumbnail(BufferedImage img, int maxWidth, int maxHeight) {
+        BufferedImage scaledImage = null;
         try {
             if (img.getWidth() >= img.getHeight()) {
                 Log.info("Img width larger than height, scaling accordingly...");
-                return Scalr.resize(img, Scalr.Method.QUALITY, Scalr.Mode.FIT_TO_WIDTH, maxWidth, maxHeight);
+                scaledImage = Scalr.resize(img, Scalr.Method.QUALITY, Scalr.Mode.FIT_TO_WIDTH, maxWidth, maxHeight);
             } else {
                 Log.info("Img height larger than width, scaling accordingly...");
-                return Scalr.resize(img, Scalr.Method.QUALITY, Scalr.Mode.FIT_TO_HEIGHT, maxWidth, maxHeight);
+                scaledImage = Scalr.resize(img, Scalr.Method.QUALITY, Scalr.Mode.FIT_TO_HEIGHT, maxWidth, maxHeight);
             }
         } catch (IllegalArgumentException | ImagingOpException e) {
-            throw new PhotoWsException("Exception while creating thumbnail", e);
+            Log.error("Incorrect usage of Scalr");
+            e.printStackTrace();
         }
-
+        return scaledImage;
     }
 }
