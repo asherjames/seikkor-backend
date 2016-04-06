@@ -34,9 +34,8 @@ public class DirectoryManager {
         this.maxThumbHeight = props.getThumbnailHeight();
     }
 
-    public List<ImageInfo> getInfoForAllImages(PropertiesWrapper props) {
+    public List<ImageInfo> getInfoForAllImages() {
         updateImageDirectories();
-        String fullsizePath = props.getFullsizePath();
         List<String> filenames = getAllFilenamesInDirectory(fullsizePath);
         List<ImageInfo> info = new ArrayList<>();
         for (String name : filenames) {
@@ -48,8 +47,6 @@ public class DirectoryManager {
     }
 
     public void updateImageDirectories() {
-        Log.info("Updating directories...");
-
         List<String> fullsizeFilenames = getAllFilenamesInDirectory(fullsizePath);
         List<String> thumbnailFilenames = getAllFilenamesInDirectory(thumbnailPath);
         List<String> thumbnailsNeeded = new ArrayList<>(CollectionUtils.subtract(fullsizeFilenames, thumbnailFilenames));
