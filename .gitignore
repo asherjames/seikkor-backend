@@ -1,7 +1,6 @@
 /PhotositeBackend.iml
 /photo-backend.iml
 /target
-/src/test/resources
 .idea
 *.class
 *.war
