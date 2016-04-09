@@ -1,7 +1,12 @@
 # seikkor-backend
-Back-end for personal photo website
+Directory scanner and image manager for personal photography website.  Returns a list of image filenames and dimensions from a designated fullsize directory and automatically creates an accompanying thumbnail image.
+
+###Install
+```
+mvn install
+```
+Change config.properties to specify image directories and thumbnail sizes
 
 #####TODO
--Finish fileutils implementation
--Decide on how to deal with image folder path
--Decide on whether image resizing will be done server-side
+* Make config.properties control thumbnail quality
+* Change thumbnail checking so that it is triggered only every 30 mins
