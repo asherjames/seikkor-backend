@@ -18,6 +18,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
@@ -25,8 +26,8 @@ import java.util.Properties;
 
 public class DirectoryManagerUnitTest {
 
-    private final String TEST_FULLSIZE_FOLDER = "C:\\images\\fullsize";
-    private final String TEST_THUMBNAIL_FOLDER = "C:\\images\\thumbnail";
+    private static String TEST_FULLSIZE_FOLDER;
+    private static String TEST_THUMBNAIL_FOLDER;
 
     private static PropertiesWrapper wrapper;
     private static DirectoryManager manager;
@@ -35,9 +36,11 @@ public class DirectoryManagerUnitTest {
 
     @BeforeClass
     public static void mockProperties() {
+        TEST_FULLSIZE_FOLDER = getFullsizeFolderPath();
+        TEST_THUMBNAIL_FOLDER = getThumbnailFolderPath();
         wrapper = mock(PropertiesWrapper.class);
-        when(wrapper.getFullsizePath()).thenReturn("C:\\images\\fullsize");
-        when(wrapper.getThumbnailPath()).thenReturn("C:\\images\\thumbnail");
+        when(wrapper.getFullsizePath()).thenReturn(TEST_FULLSIZE_FOLDER);
+        when(wrapper.getThumbnailPath()).thenReturn(TEST_THUMBNAIL_FOLDER);
         when(wrapper.getThumbnailWidth()).thenReturn(250);
         when(wrapper.getThumbnailHeight()).thenReturn(400);
         manager = new DirectoryManager(wrapper);
@@ -112,5 +115,13 @@ public class DirectoryManagerUnitTest {
         } catch (IOException e) {
             throw new PhotoWsException("IO exception while attempting to delete directory contents", e);
         }
+    }
+
+    private static String getFullsizeFolderPath() {
+        return new File("src/test/resources/fullsize").getAbsolutePath();
+    }
+
+    private static String getThumbnailFolderPath() {
+        return new File("src/test/resources/thumbnail").getAbsolutePath();
     }
 }
