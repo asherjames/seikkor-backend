@@ -36,6 +36,7 @@ public class DirectoryManagerUnitTest {
 
     @BeforeClass
     public static void mockProperties() {
+        createTestImageFolders();
         TEST_FULLSIZE_FOLDER = getFullsizeFolderPath();
         TEST_THUMBNAIL_FOLDER = getThumbnailFolderPath();
         wrapper = mock(PropertiesWrapper.class);
@@ -123,5 +124,16 @@ public class DirectoryManagerUnitTest {
 
     private static String getThumbnailFolderPath() {
         return new File("src/test/resources/thumbnail").getAbsolutePath();
+    }
+
+    private static void createTestImageFolders() {
+        File fullsizeDir = new File("src/test/resources/fullsize");
+        File thumbnailDir = new File("src/test/resources/thumbnail");
+        if (!fullsizeDir.exists()) {
+            fullsizeDir.mkdir();
+        }
+        if (!thumbnailDir.exists()) {
+            thumbnailDir.mkdir();
+        }
     }
 }
