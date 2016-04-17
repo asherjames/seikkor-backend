@@ -10,15 +10,16 @@ import java.util.Set;
 public class SeikkorApplication extends Application {
 
     private Set<Object> singletons = new HashSet<>();
-    private Set<Class<?>> empty = new HashSet<>();
+    private Set<Class<?>> classes = new HashSet<>();
 
     public SeikkorApplication() {
         singletons.add(new SeikkorResourceImpl());
+        classes.add(CorsFilter.class);
     }
 
     @Override
     public Set<Class<?>> getClasses() {
-        return empty;
+        return classes;
     }
 
     @Override
