@@ -37,8 +37,12 @@ public class DirectoryManager {
         List<ImageInfo> info = new ArrayList<>();
         for (String name : filenames) {
             String fullImagePath = createAbsolutePath(fullsizePath, name);
+            String fullThumbnailPath = createAbsolutePath(thumbnailPath, name);
+
             Dimension imageDim = getImageWidthAndHeight(new File(fullImagePath));
-            info.add(new ImageInfo(name, imageDim));
+            Dimension thumbnailDim = getImageWidthAndHeight(new File(fullThumbnailPath));
+
+            info.add(new ImageInfo(name, imageDim, thumbnailDim));
         }
         return info;
     }

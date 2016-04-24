@@ -42,8 +42,8 @@ public class DirectoryManagerUnitTest {
         wrapper = mock(PropertiesWrapper.class);
         when(wrapper.getFullsizePath()).thenReturn(TEST_FULLSIZE_FOLDER);
         when(wrapper.getThumbnailPath()).thenReturn(TEST_THUMBNAIL_FOLDER);
-        when(wrapper.getThumbnailWidth()).thenReturn(250);
-        when(wrapper.getThumbnailHeight()).thenReturn(400);
+        when(wrapper.getThumbnailWidth()).thenReturn(200);
+        when(wrapper.getThumbnailHeight()).thenReturn(300);
         manager = new DirectoryManager(wrapper);
     }
 
@@ -84,7 +84,7 @@ public class DirectoryManagerUnitTest {
     @Test
     public void imageInfoArrayContainsCorrectImageInfoObject() {
         List<ImageInfo> imageInfos = manager.getInfoForAllImages();
-        ImageInfo testInfo = new ImageInfo("0.jpg", new Dimension(1000, 1500));
+        ImageInfo testInfo = new ImageInfo("0.jpg", new Dimension(1000, 1500), new Dimension(200, 300));
         Log.info("ImageInfo from DirectoryManager:" + imageInfos.get(0).toString());
         Log.info("ImageInfo from test:" + testInfo.toString());
         assertThat(imageInfos.get(0), equalTo(testInfo));

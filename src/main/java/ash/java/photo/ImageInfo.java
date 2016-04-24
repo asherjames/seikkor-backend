@@ -11,12 +11,16 @@ public class ImageInfo {
     @SerializedName("thumbnail") private String thumbnail;
     @SerializedName("w") private int width;
     @SerializedName("h") private int height;
+    @SerializedName("thumbW") private int thumbnailWidth;
+    @SerializedName("thumbH") private int thumbnailHeight;
 
-    public ImageInfo(String filename, Dimension dimensions) {
+    public ImageInfo(String filename, Dimension dimensions, Dimension thumbnailDimensions) {
         this.filename = filename;
         this.thumbnail = filename;
         this.width = dimensions.width;
         this.height = dimensions.height;
+        this.thumbnailWidth = thumbnailDimensions.width;
+        this.thumbnailHeight = thumbnailDimensions.height;
     }
 
     @Override
@@ -28,6 +32,8 @@ public class ImageInfo {
 
         if (width != imageInfo.width) return false;
         if (height != imageInfo.height) return false;
+        if (thumbnailHeight != imageInfo.thumbnailHeight) return false;
+        if (thumbnailWidth != imageInfo.thumbnailWidth) return false;
         if (filename != null ? !filename.equals(imageInfo.filename) : imageInfo.filename != null) return false;
         return thumbnail != null ? thumbnail.equals(imageInfo.thumbnail) : imageInfo.thumbnail == null;
 
@@ -40,6 +46,8 @@ public class ImageInfo {
                 ", thumbnail='" + thumbnail + '\'' +
                 ", width=" + width +
                 ", height=" + height +
+                ", thumbnailWidth=" + thumbnailWidth +
+                ", thumbnailHeight=" + thumbnailHeight +
                 '}';
     }
 }
