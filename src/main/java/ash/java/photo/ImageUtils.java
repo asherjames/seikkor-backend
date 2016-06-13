@@ -24,10 +24,7 @@ public class ImageUtils {
                 return Scalr.resize(img, Scalr.Method.QUALITY, Scalr.Mode.FIT_TO_HEIGHT, maxWidth, maxHeight);
             }
         } catch (IllegalArgumentException | ImagingOpException e) {
-            Log.error("Incorrect usage of Scalr, returning default image...");
-            e.printStackTrace();
+            throw new PhotoWsException("Incorrect usage of Scalr, returning default image...", e);
         }
-        //return default image if Scalr is used incorrectly
-        return new BufferedImage(100, 100, BufferedImage.TYPE_INT_RGB);
     }
 }

@@ -5,10 +5,10 @@ import java.util.Properties;
 public class PropertiesWrapper {
 
     private Properties props;
-    private final String FULLSIZE_IMAGE_FOLDER_PATH_PROPERTY = "fullsizeImageFolderPath";
-    private final String THUMBNAIL_IMAGE_FOLDER_PATH_PROPERTY = "thumbnailImageFolderPath";
-    private final String THUMBNAIL_MAX_WIDTH_PROPERTY = "maxThumbnailWidth";
-    private final String THUMBNAIL_MAX_HEIGHT_PROPERTY = "maxThumbnailHeight";
+    private static final String FULLSIZE_IMAGE_FOLDER_PATH_PROPERTY = "fullsizeImageFolderPath";
+    private static final String THUMBNAIL_IMAGE_FOLDER_PATH_PROPERTY = "thumbnailImageFolderPath";
+    private static final String THUMBNAIL_MAX_WIDTH_PROPERTY = "maxThumbnailWidth";
+    private static final String THUMBNAIL_MAX_HEIGHT_PROPERTY = "maxThumbnailHeight";
 
     public PropertiesWrapper(Properties props) {
         this.props = props;

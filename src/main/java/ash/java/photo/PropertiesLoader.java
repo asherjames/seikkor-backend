@@ -11,12 +11,14 @@ public class PropertiesLoader {
 
     private static final String PROPERTIES_FILENAME = "config.properties";
 
-    public static final Logger Log = LoggerFactory.getLogger(PropertiesLoader.class);
+    private static final Logger Log = LoggerFactory.getLogger(PropertiesLoader.class);
+
+    private PropertiesLoader() {}
 
     public static Properties loadProperties() {
         Log.info("Attempting to load properties...");
         try {
-            ClassLoader loader = DirectoryManager.class.getClassLoader();
+            ClassLoader loader = PropertiesLoader.class.getClassLoader();
             InputStream input = loader.getResourceAsStream(PROPERTIES_FILENAME);
             Properties props = new Properties();
             props.load(input);
