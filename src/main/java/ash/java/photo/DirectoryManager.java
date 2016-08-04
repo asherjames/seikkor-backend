@@ -35,7 +35,8 @@ public class DirectoryManager {
         updateImageDirectories();
         List<String> filenames = getAllFilenamesInDirectory(fullsizePath);
         List<ImageInfo> info = new ArrayList<>();
-        for (String name : filenames) {
+
+        filenames.forEach((String name) -> {
             String fullImagePath = createAbsolutePath(fullsizePath, name);
             String fullThumbnailPath = createAbsolutePath(thumbnailPath, name);
 
@@ -43,7 +44,8 @@ public class DirectoryManager {
             Dimension thumbnailDim = getImageWidthAndHeight(new File(fullThumbnailPath));
 
             info.add(new ImageInfo(name, imageDim, thumbnailDim));
-        }
+        });
+
         return info;
     }
 
@@ -59,7 +61,7 @@ public class DirectoryManager {
     }
 
     private void createAndSaveThumbnails(List<String> thumbnailsNeeded) {
-        for(String s : thumbnailsNeeded) {
+        thumbnailsNeeded.forEach((String s) -> {
             BufferedImage img = loadFullsizeBufferedImage(s);
             Log.info("Loaded " + s + " and attempting to scale...");
             BufferedImage scaledImg = ImageUtils.scaleToThumbnail(img, maxThumbWidth,
@@ -71,7 +73,7 @@ public class DirectoryManager {
             } catch (IOException e) {
                 throw new PhotoWsException("Exception thrown while trying to create thumbnail", e);
             }
-        }
+        });
     }
 
     private BufferedImage loadFullsizeBufferedImage(String imageName) {
@@ -121,7 +123,7 @@ public class DirectoryManager {
         return filenames;
     }
 
-    private static String createAbsolutePath(String base, String filename) {
+    private String createAbsolutePath(String base, String filename) {
         return base + "\\" + filename;
     }
 }
