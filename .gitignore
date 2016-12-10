@@ -5,3 +5,4 @@
 .idea
 *.class
 *.war
+/seikkor.iml
