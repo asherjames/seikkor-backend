@@ -124,6 +124,6 @@ public class DirectoryManager {
     }
 
     private String createAbsolutePath(String base, String filename) {
-        return base + "\\" + filename;
+        return base + "/" + filename;
     }
 }
