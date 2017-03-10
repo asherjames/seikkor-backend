@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
+import java.util.stream.Collectors;
 
 
 public class DirectoryManagerUnitTest {
@@ -86,7 +87,11 @@ public class DirectoryManagerUnitTest {
         ImageInfo testInfo = new ImageInfo("0.jpg", new Dimension(1000, 1500), new Dimension(200, 300));
         Log.info("ImageInfo from DirectoryManager:" + imageInfos.get(0).toString());
         Log.info("ImageInfo from test:" + testInfo.toString());
-        assertThat(imageInfos.get(0), equalTo(testInfo));
+        List<ImageInfo> imageInfoList = imageInfos.stream()
+                .filter(imgInf -> imgInf.getFilename().equals("0.jpg"))
+                .collect(Collectors.toList());
+        assertThat(imageInfoList, anything());
+        assertThat(imageInfoList.get(0), equalTo(testInfo));
     }
 
     private boolean checkDirectoriesContainSameFilenames(String firstFolder, String secondFolder) {

@@ -23,6 +23,30 @@ public class ImageInfo {
         this.thumbnailHeight = thumbnailDimensions.height;
     }
 
+    public String getFilename() {
+        return filename;
+    }
+
+    public String getThumbnail() {
+        return thumbnail;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public int getThumbnailWidth() {
+        return thumbnailWidth;
+    }
+
+    public int getThumbnailHeight() {
+        return thumbnailHeight;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
