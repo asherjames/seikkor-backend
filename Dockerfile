@@ -4,6 +4,6 @@ ADD . /opt/seikkor-api/
 
 WORKDIR /opt/seikkor-api
 
-CMD ./gradlew clean build
+RUN ./gradlew clean build
 
-CMD java -jar build/libs/*.jar
+ENTRYPOINT ["java", "-jar", "build/libs/seikkor-api-0.0.1.jar"]

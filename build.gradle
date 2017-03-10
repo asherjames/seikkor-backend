@@ -1,11 +1,14 @@
 plugins {
-    id 'org.springframework.boot' version '1.4.3.RELEASE'
+    id 'org.springframework.boot' version '1.5.2.RELEASE'
 }
 
 apply plugin: 'java'
+apply plugin: 'org.springframework.boot'
 
-group = 'ash.java.photo'
-version = '1.0.0'
+jar {
+    baseName = 'seikkor-api'
+    version = '0.0.1'
+}
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -25,8 +28,4 @@ dependencies {
     compile group: 'org.mockito', name: 'mockito-core', version: '1.10.19'
     compile group: 'org.hamcrest', name: 'hamcrest-all', version: '1.3'
     testCompile group: 'junit', name: 'junit', version: '4.12'
-}
-
-springBoot {
-    mainClass = "ash.java.photo.SeikkorStartup"
 }
